@@ -8,6 +8,9 @@ using namespace std;
 
 int menu();
 
+void CrearRelacion();
+vecttor <Relacion*> relaciones;
+
 int main(int argc, char const *argv[])
 {
 	int resp =0;
@@ -18,6 +21,7 @@ int main(int argc, char const *argv[])
 		switch(opc=menu()){//inicio switch
 
 			case 1://inicio case 1
+				CrearRelacion();
 				break;//fin case 1
 
 			case 2://inicio case 2
@@ -57,4 +61,25 @@ int menu()
         }
     } //end del while
     return 0;
+}
+
+void CrearRelacion(){
+	Relacion* relacion;
+	string nombre;
+	string encabezado;
+	int resp;
+	int cont=0;
+	cout<<"Ingrese el Nombre de la Relacion: ";
+	cin>> nombre;
+	relacion = new Relacion(nombre);
+	while(resp!=2){
+		cout<<"Ingrese el Encabezado "<<cont<<" : ";
+		cin>> encabezado;
+		relacion->addList_encabezados(encabezado);
+		cont++;
+		cout<<"Desea continuar?\n 1.Si\n 2.No\n:";
+		cin>>resp;
+	}
+
+	relaciones.push_back(relacion);
 }
