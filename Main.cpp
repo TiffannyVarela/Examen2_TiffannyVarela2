@@ -4,12 +4,16 @@
 #include <vector>
 #include "Tupla.h"
 #include "Relacion.h"
+#include <fstream>
 using namespace std;
 
 int menu();
 
 void CrearRelacion();
-vecttor <Relacion*> relaciones;
+Relacion* relacion;
+vector <Relacion*> relaciones;
+string ruta = "Relaciones/";
+ofstream outfile;
 
 int main(int argc, char const *argv[])
 {
@@ -35,6 +39,13 @@ int main(int argc, char const *argv[])
 		cout<<"Desea continuar?\n 1.Si\n 2.No\n:";
 		cin>>resp;
 	}while(resp!=2);//fin do while
+	
+	for (int i = 0; i < relaciones.size(); i++)
+    {
+        delete relaciones[i];
+        relaciones[i] = NULL;
+    }
+    relaciones.clear();
 	cout<<"Programa Terminado"<<endl;
 	return 0;
 }
@@ -64,9 +75,10 @@ int menu()
 }
 
 void CrearRelacion(){
-	Relacion* relacion;
+	ofstream outfile2;
 	string nombre;
 	string encabezado;
+	string nombreArchivo = "Relaciones";
 	int resp;
 	int cont=0;
 	cout<<"Ingrese el Nombre de la Relacion: ";
@@ -80,6 +92,42 @@ void CrearRelacion(){
 		cout<<"Desea continuar?\n 1.Si\n 2.No\n:";
 		cin>>resp;
 	}
+	outfile.open(nombreArchivo+".txt", std::ios::app);
+	outfile<<nombre<<endl;
+	for (int i = 0; i < relacion->getList_encabezados().size(); i++)
+    {
+    	outfile<<relacion->getEncabezado(i);
+    	if (i<relacion->getList_encabezados().size()-1)
+    	{
+    		outfile<<";";
+    	}
+    }
+    outfile<<"#"<<endl;
+    //outfile<<"-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"<<endl;
+	outfile.close();
+
+	outfile2.open(ruta + nombre + ".txt");
+
+	for (int i = 0; i < relacion->getList_encabezados().size(); i++)
+    {
+    	outfile2<<relacion->getEncabezado(i);
+    	if (!relacion->getList_tuplas().empty())
+    	{
+    		outfile2<<"prueba "<<i<<endl;
+    	}
+    	else{
+    		cout<<"Sin Tupla"<<endl;
+    	}
+    	if (i<relacion->getList_encabezados().size()-1)
+    	{
+    		outfile2<<";";
+    	}
+    }
+    outfile2<<"#"<<endl;
+    //outfile<<"-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"<<endl;
+	outfile2.close();
+
+
 
 	relaciones.push_back(relacion);
 }
