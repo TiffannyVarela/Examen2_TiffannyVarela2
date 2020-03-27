@@ -104,7 +104,7 @@ void CrearRelacion(){
 		cin>>resp;
 	}
 	outfile.open(nombreArchivo+".txt", std::ios::app);
-	outfile<<nombre<<endl;
+	outfile<<nombre<<";";
 	for (int i = 0; i < relacion->getList_encabezados().size(); i++)
     {
     	outfile<<relacion->getEncabezado(i);
@@ -113,28 +113,29 @@ void CrearRelacion(){
     		outfile<<";";
     	}
     }
-    outfile<<"#"<<endl;
+    outfile<<endl;
     //outfile<<"-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"<<endl;
 	outfile.close();
 
 	outfile2.open(ruta + nombre + ".txt");
-
-	for (int i = 0; i < relacion->getList_encabezados().size(); i++)
+	if (!relacion->getList_tuplas().empty())
     {
-    	outfile2<<relacion->getEncabezado(i);
-    	if (!relacion->getList_tuplas().empty())
+    	for (int i = 0; i < relacion->getList_tuplas().size(); i++)
     	{
-    		outfile2<<"prueba "<<i<<endl;
-    	}
-    	else{
-    		cout<<"Sin Tupla"<<endl;
-    	}
-    	if (i<relacion->getList_encabezados().size()-1)
-    	{
-    		outfile2<<";";
+			for (int j = 0; j < relacion->getTupla(i)->getList_atributos().size(); j++)
+			{
+				outfile2<<relacion->getTupla(i)->getAtributo(j);
+				if (j<relacion->getTupla(i)->getList_atributos().size().size()-1)
+		    	{
+		    		outfile2<<";";
+		    	}
+			}
+			outfile2<<endl;
     	}
     }
-    outfile2<<"#"<<endl;
+    else{
+    	cout<<"Sin Tupla"<<endl;
+    }
     //outfile<<"-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"<<endl;
 	outfile2.close();
 
@@ -209,7 +210,6 @@ void VerRelaciones(){
 void InsertarTupla(){
 	int pos;
 	int id;
-	int cont =1;
 	string atri;
 	srand(time(NULL));
 	cout<<"RELACIONES DISPONIBLES\n\n";
@@ -229,13 +229,11 @@ void InsertarTupla(){
 	}
 	id = 1000+rand()%(10000-1000);
 	tupla = new Tupla(id);
-	for (int i = 0; i < relaciones[pos]->getList_encabezados().size(); i++)
+	for (int i = 1; i < relaciones[pos]->getList_encabezados().size(); i++)
 	{
-		cout<<"Inserte "<<relaciones[pos]->getEncabezado(cont)<<": "<<endl;
+		cout<<"Inserte "<<relaciones[pos]->getEncabezado(i)<<": "<<endl;
 		cin>>atri;
 		tupla->addList_atributos(atri);
-		cont++;
 	}
 	relacion->addList_tuplas(tupla);
-	cont=1;
 }
