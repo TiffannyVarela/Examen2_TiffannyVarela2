@@ -36,7 +36,7 @@ int main(int argc, char const *argv[])
 
 		}//fin switch
 
-		cout<<"Desea continuar?\n 1.Si\n 2.No\n:";
+		cout<<"Desea continuar dentro del programa?\n 1.Si\n 2.No\n:";
 		cin>>resp;
 	}while(resp!=2);//fin do while
 	
@@ -89,7 +89,7 @@ void CrearRelacion(){
 		cin>> encabezado;
 		relacion->addList_encabezados(encabezado);
 		cont++;
-		cout<<"Desea continuar?\n 1.Si\n 2.No\n:";
+		cout<<"Desea continuar ingresando encabezados?\n 1.Si\n 2.No\n:";
 		cin>>resp;
 	}
 	outfile.open(nombreArchivo+".txt", std::ios::app);
