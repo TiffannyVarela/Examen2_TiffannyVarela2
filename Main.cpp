@@ -5,6 +5,9 @@
 #include "Tupla.h"
 #include "Relacion.h"
 #include <fstream>
+#include <iomanip>
+#include<stdlib.h>
+#include<time.h>
 using namespace std;
 
 int menu();
@@ -14,6 +17,11 @@ Relacion* relacion;
 vector <Relacion*> relaciones;
 string ruta = "Relaciones/";
 ofstream outfile;
+
+void VerRelaciones();
+
+void InsertarTupla();
+Tupla* tupla;
 
 int main(int argc, char const *argv[])
 {
@@ -29,9 +37,11 @@ int main(int argc, char const *argv[])
 				break;//fin case 1
 
 			case 2://inicio case 2
+				VerRelaciones();
 				break;//fin case 2
 
 			case 3://inicio case 3
+				InsertarTupla();
 				break;//fin case 3
 
 		}//fin switch
@@ -80,10 +90,11 @@ void CrearRelacion(){
 	string encabezado;
 	string nombreArchivo = "Relaciones";
 	int resp;
-	int cont=0;
+	int cont=1;
 	cout<<"Ingrese el Nombre de la Relacion: ";
 	cin>> nombre;
 	relacion = new Relacion(nombre);
+	relacion->addList_encabezados("ID");
 	while(resp!=2){
 		cout<<"Ingrese el Encabezado "<<cont<<" : ";
 		cin>> encabezado;
@@ -130,4 +141,101 @@ void CrearRelacion(){
 
 
 	relaciones.push_back(relacion);
+}
+
+void VerRelaciones(){
+	int pos;
+	cout<<"RELACIONES DISPONIBLES\n\n";
+
+	for (int i = 0; i < relaciones.size(); i++)
+	{
+		cout<<"Posicion "<<i<<" : "<<relaciones[i]->getNombre()<<endl;
+	}
+
+	cout<<"Ingrese la Posicion que Desea Ver: ";
+	cin>>pos;
+
+	while(pos<0 || pos>relaciones.size()-1){
+		cout<<"POSICION NO VALIDA"<<endl;
+		cout<<"Ingrese la Posicion que Desea Ver: ";
+		cin>>pos;
+	}
+
+	int filas = relaciones[pos]->getList_tuplas().size();
+	int columnas = relaciones[pos]->getList_encabezados().size();
+	string** matriz = new string*[filas];
+
+	for(int i=0; i<columnas; i++){
+                matriz[i]=new string[columnas];
+        }
+
+	for (int i = 0; i < filas; i++)
+	{
+		for (int j = 0; j < columnas; j++)
+		{
+			if (i==0)
+			{
+				matriz[i][j]=relaciones[pos]->getEncabezado(j);
+			}
+			else{
+				//matriz[i][j]=relaciones[pos]->getTupla(i)->getAtributo(j);
+			}
+		}
+	}
+
+	for(int i=0;i<filas;i++){
+        for(int j=0;j<columnas;j++){
+                cout<<"a["<<i<<"]["<<j<<"]="<<setw(3)<<matriz[i][j]<<" ";
+        }
+        cout<<endl;
+
+    }
+
+
+	/*cout<<relaciones[pos]->getNombre()<<endl<<endl;
+	int tam = relaciones->getList_encabezados().size()
+	for (int i = 0; i < relaciones->getList_encabezados().size(); i++)
+	{
+		if (i==0)
+		{
+			/* code */
+		//}
+	//}
+
+
+}
+
+
+void InsertarTupla(){
+	int pos;
+	int id;
+	int cont =1;
+	string atri;
+	srand(time(NULL));
+	cout<<"RELACIONES DISPONIBLES\n\n";
+
+	for (int i = 0; i < relaciones.size(); i++)
+	{
+		cout<<"Posicion "<<i<<" : "<<relaciones[i]->getNombre()<<endl;
+	}
+
+	cout<<"Ingrese la Posicion de la Relacion en la Cual Quiera Insertar: ";
+	cin>>pos;
+
+	while(pos<0 || pos>relaciones.size()-1){
+		cout<<"POSICION NO VALIDA"<<endl;
+		cout<<"Ingrese la Posicion de la Relacion en la Cual Quiera Insertar: ";
+		cin>>pos;
+	}
+	id = 1000+rand()%(10000-1000);
+	tupla = new Tupla(id);
+	for (int i = 0; i < relaciones[pos]->getList_encabezados().size(); i++)
+	{
+		cout<<"Inserte "<<relaciones[pos]->getEncabezado(cont)<<": "<<endl;
+		cin>>atri;
+		tupla->addList_atributos(atri);
+		cont++;
+	}
+	relacion->addList_tuplas(tupla);
+	cont=1;
 }
