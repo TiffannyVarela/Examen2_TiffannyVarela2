@@ -27,6 +27,13 @@ int main(int argc, char const *argv[])
 {
 	int resp =0;
 	int opc =0;
+	string cadena;
+	ifstream leer("Relaciones.txt");
+	while(!leer.eof()){
+		leer>>cadena;
+		cout<<"Cadena "<<cadena<<endl;
+	}
+	leer.close();
 
 	do{//inicio do while
 
@@ -85,7 +92,6 @@ int menu()
 }
 
 void CrearRelacion(){
-	ofstream outfile2;
 	string nombre;
 	string encabezado;
 	string nombreArchivo = "Relaciones";
@@ -110,37 +116,11 @@ void CrearRelacion(){
     	outfile<<relacion->getEncabezado(i);
     	if (i<relacion->getList_encabezados().size()-1)
     	{
-    		outfile<<";";
+    		outfile<<",";
     	}
     }
     outfile<<endl;
-    //outfile<<"-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"<<endl;
 	outfile.close();
-
-	outfile2.open(ruta + nombre + ".txt");
-	if (!relacion->getList_tuplas().empty())
-    {
-    	for (int i = 0; i < relacion->getList_tuplas().size(); i++)
-    	{
-			for (int j = 0; j < relacion->getTupla(i)->getList_atributos().size(); j++)
-			{
-				outfile2<<relacion->getTupla(i)->getAtributo(j);
-				if (j<relacion->getTupla(i)->getList_atributos().size().size()-1)
-		    	{
-		    		outfile2<<";";
-		    	}
-			}
-			outfile2<<endl;
-    	}
-    }
-    else{
-    	cout<<"Sin Tupla"<<endl;
-    }
-    //outfile<<"-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"<<endl;
-	outfile2.close();
-
-
-
 	relaciones.push_back(relacion);
 }
 
@@ -152,8 +132,7 @@ void VerRelaciones(){
 	{
 		cout<<"Posicion "<<i<<" : "<<relaciones[i]->getNombre()<<endl;
 	}
-
-	cout<<"Ingrese la Posicion que Desea Ver: ";
+	cout<<"\nIngrese la Posicion que Desea Ver: ";
 	cin>>pos;
 
 	while(pos<0 || pos>relaciones.size()-1){
@@ -162,48 +141,29 @@ void VerRelaciones(){
 		cin>>pos;
 	}
 
-	int filas = relaciones[pos]->getList_tuplas().size();
-	int columnas = relaciones[pos]->getList_encabezados().size();
-	string** matriz = new string*[filas];
-
-	for(int i=0; i<columnas; i++){
-                matriz[i]=new string[columnas];
-        }
-
-	for (int i = 0; i < filas; i++)
+	cout<<relaciones[pos]->getNombre()<<endl<<endl;
+	int tam = relaciones[pos]->getList_encabezados().size();
+	for (int i = 0; i < tam; i++)
 	{
-		for (int j = 0; j < columnas; j++)
+		cout<<relaciones[pos]->getEncabezado(i)<<setw(12);
+	}
+	cout<<endl;
+
+
+	for (int i = 0; i < relaciones[pos]->getList_tuplas().size(); i++)
+	{
+		for (int j = 0; j < relaciones[pos]->getList_tuplas().size(); j++)
 		{
 			if (i==0)
 			{
-				matriz[i][j]=relaciones[pos]->getEncabezado(j);
+				cout<<relaciones[pos]->getTupla(i)->getId()<<setw(12);
 			}
 			else{
-				//matriz[i][j]=relaciones[pos]->getTupla(i)->getAtributo(j);
+				cout<<relaciones[pos]->getTupla(i)->getAtributo(j)<<setw(12);
 			}
 		}
+		cout<<endl;
 	}
-
-	for(int i=0;i<filas;i++){
-        for(int j=0;j<columnas;j++){
-                cout<<"a["<<i<<"]["<<j<<"]="<<setw(3)<<matriz[i][j]<<" ";
-        }
-        cout<<endl;
-
-    }
-
-
-	/*cout<<relaciones[pos]->getNombre()<<endl<<endl;
-	int tam = relaciones->getList_encabezados().size()
-	for (int i = 0; i < relaciones->getList_encabezados().size(); i++)
-	{
-		if (i==0)
-		{
-			/* code */
-		//}
-	//}
-
-
 }
 
 
@@ -235,5 +195,29 @@ void InsertarTupla(){
 		cin>>atri;
 		tupla->addList_atributos(atri);
 	}
-	relacion->addList_tuplas(tupla);
+	relaciones[pos]->addList_tuplas(tupla);
+
+	ofstream outfile2;
+	string nombre = relaciones[pos]->getNombre();
+
+	outfile2.open(ruta + nombre + ".txt");
+	if (!relaciones[pos]->getList_tuplas().empty())
+    {
+    	for (int i = 0; i < relaciones[pos]->getList_tuplas().size(); i++)
+    	{
+			for (int j = 0; j < relaciones[pos]->getTupla(i)->getList_atributos().size(); j++)
+			{
+				outfile2<<relaciones[pos]->getTupla(i)->getAtributo(j);
+				if (j<relaciones[pos]->getTupla(i)->getList_atributos().size()-1)
+		    	{
+		    		outfile2<<";";
+		    	}
+			}
+			outfile2<<endl;
+    	}
+    }
+    else{
+    	cout<<"Sin Tupla"<<endl;
+    }
+	outfile2.close();
 }
