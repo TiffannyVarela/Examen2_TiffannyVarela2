@@ -10,7 +10,28 @@ int menu();
 
 int main(int argc, char const *argv[])
 {
-	/* code */
+	int resp =0;
+	int opc =0;
+
+	do{//inicio do while
+
+		switch(opc=menu()){//inicio switch
+
+			case 1://inicio case 1
+				break;//fin case 1
+
+			case 2://inicio case 2
+				break;//fin case 2
+
+			case 3://inicio case 3
+				break;//fin case 3
+
+		}//fin switch
+
+		cout<<"Desea continuar?\n 1.Si\n 2.No\n:";
+		cin>>resp;
+	}while(resp!=2);//fin do while
+	cout<<"Programa Terminado"<<endl;
 	return 0;
 }
 
