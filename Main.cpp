@@ -8,6 +8,7 @@
 #include <iomanip>
 #include<stdlib.h>
 #include<time.h>
+#include <bits/stdc++.h>
 using namespace std;
 
 int menu();
@@ -22,17 +23,29 @@ void VerRelaciones();
 void InsertarTupla();
 Tupla* tupla;
 
+string token(string, string, int);
+
 int main(int argc, char const *argv[])
 {
 	int resp =0;
 	int opc =0;
+	int cont=2;
 	string cadena;
-	ifstream leer("Relaciones.txt");
+	string nombre, encabezado;
+
+
+	/*ifstream leer("Relaciones.txt");
 	while(!leer.eof()){
-		leer>>cadena;
-		cout<<"Cadena "<<cadena<<endl;
+		while (leer.get() != '#')
+		{
+		    leer.unget();
+		    getline(leer, nombre, ';');
+		    relacion = new Relacion(nombre);
+		    getline(leer, encabezado, ';');
+		    relacion->addList_encabezados(encabezado);
+		}
 	}
-	leer.close();
+	leer.close();*/
 
 	do{//inicio do while
 
@@ -56,7 +69,7 @@ int main(int argc, char const *argv[])
 		cin>>resp;
 	}while(resp!=2);//fin do while
 	
-	for (int i = 0; i < relaciones.size(); i++)
+	for (int i = 0; i < relaciones.size()-1; i++)
     {
         delete relaciones[i];
         relaciones[i] = NULL;
@@ -115,9 +128,10 @@ void CrearRelacion(){
     	outfile<<relacion->getEncabezado(i);
     	if (i<relacion->getList_encabezados().size()-1)
     	{
-    		outfile<<",";
+    		outfile<<";";
     	}
     }
+    outfile<<"#";
     outfile<<endl;
 	outfile.close();
 	relaciones.push_back(relacion);
@@ -219,4 +233,28 @@ void InsertarTupla(){
     	cout<<"Sin Tupla"<<endl;
     }
 	outfile2.close();
+}
+
+string token(string cadena, string divisor, int pos){
+       if(cadena.size()>0){
+         char oracion[cadena.size()]; 
+         for (int i=0;i<=cadena.size();i++)
+         {
+               oracion[i]=cadena[i];
+         }                    
+         char *ptrtoken; 
+         int num=1;
+         const char* d=divisor.c_str();
+         ptrtoken = strtok(oracion , d);             
+         while(ptrtoken){
+             if(num==pos){ 
+                return ptrtoken;                    
+             }                 
+             ptrtoken = strtok(NULL, d);
+             num++;
+         }
+         return "";
+       }else{
+             return "";
+       }
 }
