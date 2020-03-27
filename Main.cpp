@@ -15,7 +15,6 @@ int menu();
 void CrearRelacion();
 Relacion* relacion;
 vector <Relacion*> relaciones;
-string ruta = "Relaciones/";
 ofstream outfile;
 
 void VerRelaciones();
@@ -200,7 +199,7 @@ void InsertarTupla(){
 	ofstream outfile2;
 	string nombre = relaciones[pos]->getNombre();
 
-	outfile2.open(ruta + nombre + ".txt");
+	outfile2.open(nombre + ".txt");
 	if (!relaciones[pos]->getList_tuplas().empty())
     {
     	for (int i = 0; i < relaciones[pos]->getList_tuplas().size(); i++)
