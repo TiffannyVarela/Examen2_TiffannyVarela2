@@ -23,8 +23,6 @@ void VerRelaciones();
 void InsertarTupla();
 Tupla* tupla;
 
-string token(string, string, int);
-
 int main(int argc, char const *argv[])
 {
 	int resp =0;
@@ -36,14 +34,15 @@ int main(int argc, char const *argv[])
 
 	/*ifstream leer("Relaciones.txt");
 	while(!leer.eof()){
-		while (leer.get() != '#')
+		getline(leer, cadena);
+		if (cadena.size()>0)
 		{
-		    leer.unget();
-		    getline(leer, nombre, ';');
-		    relacion = new Relacion(nombre);
-		    getline(leer, encabezado, ';');
-		    relacion->addList_encabezados(encabezado);
+			getline(leer, nombre, ';');
+			relacion = new Relacion(nombre);
+			getline(leer, encabezado, ';');
+			relacion->addList_encabezados(encabezado);
 		}
+		relaciones.push_back(relacion);
 	}
 	leer.close();*/
 
@@ -131,7 +130,7 @@ void CrearRelacion(){
     		outfile<<";";
     	}
     }
-    outfile<<"#";
+    outfile<<";";
     outfile<<endl;
 	outfile.close();
 	relaciones.push_back(relacion);
@@ -233,28 +232,4 @@ void InsertarTupla(){
     	cout<<"Sin Tupla"<<endl;
     }
 	outfile2.close();
-}
-
-string token(string cadena, string divisor, int pos){
-       if(cadena.size()>0){
-         char oracion[cadena.size()]; 
-         for (int i=0;i<=cadena.size();i++)
-         {
-               oracion[i]=cadena[i];
-         }                    
-         char *ptrtoken; 
-         int num=1;
-         const char* d=divisor.c_str();
-         ptrtoken = strtok(oracion , d);             
-         while(ptrtoken){
-             if(num==pos){ 
-                return ptrtoken;                    
-             }                 
-             ptrtoken = strtok(NULL, d);
-             num++;
-         }
-         return "";
-       }else{
-             return "";
-       }
 }
