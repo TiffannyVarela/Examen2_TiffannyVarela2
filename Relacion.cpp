@@ -16,7 +16,7 @@ Relacion::Relacion(string nombre){
 	this->nombre=nombre;
 }
 
-void Relacion::setId(string x){
+void Relacion::setNombre(string x){
 	nombre=x;
 } 
 
