@@ -3,6 +3,7 @@
 #include <typeinfo>
 #include <string>
 #include <vector>
+using namespace std;
 
 class Tupla
 {
@@ -19,8 +20,8 @@ public:
 	void setList_atributos(vector <string> );
 	vector <string> getList_atributos();
 	string getAtributo(int);
-	vector <string> addList_atributos(string);
-	vector <string> removeList_atributos(int);
+	void addList_atributos(string);
+	void removeList_atributos(int);
 
 	~Tupla();
 	
